@@ -1,9 +1,9 @@
 <template>
-  <section class="why">
+  <section class="why" ref="target" :class="{ 'in-view': inView }">
     <div class="why__overlay"></div>
     <div class="why__pattern"></div>
     <div class="why__inner">
-      <div class="why__text">
+      <div class="why__text anim-left">
         <p class="section-eyebrow">Our Members' Services</p>
         <h2 class="section-title">
           What We<br />
@@ -16,14 +16,14 @@
         <a href="#" class="btn-gold">Book Your Session</a>
       </div>
 
-      <div class="why__features">
+      <div class="why__features anim-right">
         <div class="why__counter">
           <span class="why__counter-num">4</span>
           <span class="why__counter-sep">/</span>
           <span class="why__counter-total">12+ Services</span>
         </div>
 
-        <div class="feature" v-for="f in features" :key="f.title">
+        <div class="feature anim-up" v-for="(f, i) in features" :key="f.title" :style="{ '--i': i }">
           <div class="feature__icon">{{ f.icon }}</div>
           <div class="feature__content">
             <h3>{{ f.title }}</h3>
@@ -36,6 +36,9 @@
 </template>
 
 <script setup>
+import { useInView } from '../composables/useInView'
+const { target, inView } = useInView()
+
 const features = [
   {
     icon: '◆',
@@ -242,6 +245,34 @@ const features = [
 }
 
 
+
+/* ── Scroll animations ── */
+.anim-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+
+.anim-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s;
+}
+
+.anim-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity   0.65s cubic-bezier(0.16,1,0.3,1) calc(0.2s + var(--i,0) * 0.1s),
+    transform 0.65s cubic-bezier(0.16,1,0.3,1) calc(0.2s + var(--i,0) * 0.1s);
+}
+
+.in-view .anim-left,
+.in-view .anim-right,
+.in-view .anim-up {
+  opacity: 1;
+  transform: none;
+}
 
 @media (max-width: 900px) {
   .why__inner {

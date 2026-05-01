@@ -7,20 +7,19 @@
 
     <div class="hero__inner">
       <div class="hero__left">
-        <h1 class="hero__title">
-
+        <p class="hero__eyebrow anim-eyebrow">Est. 2000 · Denpasar, Bali</p>
+        <h1 class="hero__title anim-title">
           <span class="gold">Mountain Bee 666 </span><br />
           MB 666<br />
         </h1>
-        <p class="hero__subtitle">
+        <p class="hero__subtitle anim-subtitle">
           A brotherhood rooted in Jalan Gunung Lebah 3 since 2000<br class="desktop-only" />
           united by community, spread across Denpasar.
         </p>
-        <p class="hero__eyebrow">Est. 2000 · Denpasar, Bali</p>
       </div>
 
-      <div class="hero__right">
-        <img src="../assets/images/remove_bg_images.png" alt="HBSC Bali Tattoo" class="hero__image" />
+      <div class="hero__right anim-image">
+        <img src="../assets/images/remove_bg_images.png" alt="Mountain Bee 666" class="hero__image" />
       </div>
     </div>
   </section>
@@ -160,6 +159,21 @@
   mix-blend-mode: multiply;
   filter: drop-shadow(0 10px 40px rgba(0,0,0,0.5));
 }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.anim-eyebrow  { animation: fadeInUp   0.7s cubic-bezier(0.16,1,0.3,1) 0.15s both; }
+.anim-title    { animation: fadeInUp   0.9s cubic-bezier(0.16,1,0.3,1) 0.35s both; }
+.anim-subtitle { animation: fadeInUp   0.7s cubic-bezier(0.16,1,0.3,1) 0.55s both; }
+.anim-image    { animation: fadeInRight 1.1s cubic-bezier(0.16,1,0.3,1) 0.25s both; }
 
 .desktop-only {
   display: block;

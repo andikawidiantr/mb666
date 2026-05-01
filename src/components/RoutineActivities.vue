@@ -1,9 +1,9 @@
 <template>
-  <section id="activities" class="activities">
+  <section id="activities" class="activities" ref="target" :class="{ 'in-view': inView }">
     <div class="activities__fade activities__fade--top"></div>
     <div class="activities__inner">
 
-      <div class="activities__left">
+      <div class="activities__left anim-left">
         <h2 class="activities__title">Our Routine Activities</h2>
         <p class="activities__desc">
           <strong>Mountain Bee 666 (MB666)</strong> holds two signature annual events —
@@ -12,11 +12,15 @@
           crafted to build lasting experiences for the next generation while bringing our
           community closer together in unity and harmony.
         </p>
-        <!-- <a href="#" class="activities__cta">EXPLORE OUR WORK →</a> -->
       </div>
 
       <div class="activities__right">
-        <div class="activity-card" v-for="item in items" :key="item.title">
+        <div
+          class="activity-card anim-up"
+          v-for="(item, i) in items"
+          :key="item.title"
+          :style="{ '--i': i }"
+        >
           <div class="activity-card__header">
             <span class="activity-card__title">{{ item.title }}</span>
             <span class="activity-card__arrow">→</span>
@@ -27,7 +31,12 @@
 
     </div>
     <div class="activities__panels">
-      <div class="panel" v-for="panel in panels" :key="panel.label">
+      <div
+        class="panel anim-panel"
+        v-for="(panel, i) in panels"
+        :key="panel.label"
+        :style="{ '--i': i }"
+      >
         <img :src="panel.img" :alt="panel.label" class="panel__img" />
         <div class="panel__overlay"></div>
         <span class="panel__label">{{ panel.label }}</span>
@@ -39,6 +48,9 @@
 </template>
 
 <script setup>
+import { useInView } from '../composables/useInView'
+const { target, inView } = useInView()
+
 const panels = [
   { label: 'About', img: new URL('../assets/images/4_1.png', import.meta.url).href },
   { label: 'Social Activities', img: new URL('../assets/images/3_1.png', import.meta.url).href },
@@ -233,6 +245,36 @@ const items = [
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-white);
+}
+
+/* ── Scroll animations ── */
+.anim-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+
+.anim-up {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity   0.7s cubic-bezier(0.16,1,0.3,1) calc(var(--i,0) * 0.12s),
+    transform 0.7s cubic-bezier(0.16,1,0.3,1) calc(var(--i,0) * 0.12s);
+}
+
+.anim-panel {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition:
+    opacity   0.85s cubic-bezier(0.16,1,0.3,1) calc(var(--i,0) * 0.15s),
+    transform 0.85s cubic-bezier(0.16,1,0.3,1) calc(var(--i,0) * 0.15s);
+}
+
+.in-view .anim-left,
+.in-view .anim-up,
+.in-view .anim-panel {
+  opacity: 1;
+  transform: none;
 }
 
 @media (max-width: 900px) {

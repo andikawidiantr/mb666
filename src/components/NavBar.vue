@@ -1,16 +1,16 @@
 <template>
   <header :class="['navbar', { scrolled: isScrolled, 'menu-open': menuOpen }]">
     <div class="navbar__inner">
-      <a href="#" class="navbar__logo" @click.prevent="closeMenu">
+      <RouterLink to="/" class="navbar__logo" @click="goHome">
         <img src="../assets/images/logomb666.png" alt="Mountain Bee 666" class="logo-img" />
-      </a>
+      </RouterLink>
 
       <nav class="navbar__nav" :class="{ open: menuOpen }">
-        <a href="#" @click.prevent="closeMenu">Nyepi</a>
-        <a href="#" @click.prevent="closeMenu">17 Agustus</a>
-        <a href="#" @click.prevent="closeMenu">Kegiatan Sosial</a>
-        <a href="#" @click.prevent="closeMenu">Galery</a>
-        <a href="#" @click.prevent="closeMenu">Merch</a>
+        <RouterLink to="/nyepi" @click="closeMenu">Nyepi</RouterLink>
+        <RouterLink to="/agustusan" @click="closeMenu">17 Agustus</RouterLink>
+        <RouterLink to="/kegiatan-sosial" @click="closeMenu">Kegiatan Sosial</RouterLink>
+        <a href="#gallery" @click.prevent="goSection('#gallery')">Galery</a>
+        <a href="#merch" @click.prevent="goSection('#merch')">Merch</a>
         <a href="#" @click.prevent="closeMenu">Our Services</a>
         <a href="#" @click.prevent="closeMenu">About Us</a>
       </nav>
@@ -26,9 +26,11 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router     = useRouter()
 const isScrolled = ref(false)
-const menuOpen = ref(false)
+const menuOpen   = ref(false)
 
 function onScroll() {
   isScrolled.value = window.scrollY > 60
@@ -42,6 +44,26 @@ function toggleMenu() {
 function closeMenu() {
   menuOpen.value = false
   document.body.style.overflow = ''
+}
+
+function goHome() {
+  closeMenu()
+  if (router.currentRoute.value.path === '/') {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+  // jika di halaman lain, RouterLink to="/" otomatis navigasi + scrollBehavior handle scroll ke top
+}
+
+async function goSection(hash) {
+  closeMenu()
+  if (router.currentRoute.value.path !== '/') {
+    await router.push('/')
+    setTimeout(() => {
+      document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
+    }, 300)
+  } else {
+    document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
+  }
 }
 
 onMounted(() => window.addEventListener('scroll', onScroll))
@@ -106,7 +128,8 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   white-space: nowrap;
 }
 
-.navbar__nav a:hover {
+.navbar__nav a:hover,
+.navbar__nav .router-link-active {
   color: var(--color-gold);
 }
 

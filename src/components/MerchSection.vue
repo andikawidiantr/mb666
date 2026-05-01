@@ -1,9 +1,9 @@
 <template>
-  <section id="merch" class="artists">
+  <section id="merch" class="artists" ref="target" :class="{ 'in-view': inView }">
     <div class="artists__overlay"></div>
     <div class="artists__pattern"></div>
     <div class="artists__inner">
-      <div class="section-header">
+      <div class="section-header anim-up">
         <!-- <p class="section-eyebrow">Look</p> -->
         <h2 class="section-title">Our <span class="gold">Merch</span></h2>
         <p class="section-desc">
@@ -14,7 +14,12 @@
       </div>
 
       <div class="artists__grid">
-        <div class="artist-card" v-for="artist in artists" :key="artist.name">
+        <div
+          class="artist-card anim-up"
+          v-for="(artist, i) in artists"
+          :key="artist.name"
+          :style="{ '--i': i + 1 }"
+        >
           <div class="artist-card__photo">
             <img :src="artist.photo" :alt="artist.name" loading="lazy" />
             <div class="artist-card__photo-overlay"></div>
@@ -31,6 +36,9 @@
 </template>
 
 <script setup>
+import { useInView } from '../composables/useInView'
+const { target, inView } = useInView()
+
 const artists = [
   {
     name: "T-Shirt Nyepi Caka 1945",
@@ -218,6 +226,20 @@ const artists = [
 }
 
 .d-br { display: block; }
+
+/* ── Scroll animations ── */
+.anim-up {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity   0.7s cubic-bezier(0.16,1,0.3,1) calc(var(--i,0) * 0.1s),
+    transform 0.7s cubic-bezier(0.16,1,0.3,1) calc(var(--i,0) * 0.1s);
+}
+
+.in-view .anim-up {
+  opacity: 1;
+  transform: none;
+}
 
 @media (max-width: 1024px) {
   .artists__grid {

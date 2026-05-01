@@ -1,16 +1,7 @@
 <template>
   <div id="app-root">
     <NavBar />
-    <main>
-      <HeroSection />
-      <RoutineActivities />
-      <WhyChooseUs />
-      <GallerySection />
-      <MerchSection />
-      <Testimonials />
-      <BookingProcess />
-      <ContactSection />
-    </main>
+    <RouterView />
     <FooterSection />
 
     <Transition name="fade">
@@ -23,15 +14,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import NavBar from './components/NavBar.vue'
-import HeroSection from './components/HeroSection.vue'
-import RoutineActivities from './components/RoutineActivities.vue'
-import WhyChooseUs from './components/WhyChooseUs.vue'
-import GallerySection from './components/GallerySection.vue'
-import MerchSection from './components/MerchSection.vue'
-// import Testimonials from './components/Testimonials.vue'
-// import BookingProcess from './components/BookingProcess.vue'
-// import ContactSection from './components/ContactSection.vue'
+import NavBar       from './components/NavBar.vue'
 import FooterSection from './components/FooterSection.vue'
 
 const showBackTop = ref(false)
@@ -44,7 +27,7 @@ function scrollTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-onMounted(() => window.addEventListener('scroll', onScroll))
+onMounted(()  => window.addEventListener('scroll', onScroll))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 

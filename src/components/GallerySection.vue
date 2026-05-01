@@ -1,7 +1,7 @@
 <template>
-  <section id="gallery" class="gallery">
+  <section id="gallery" class="gallery" ref="target" :class="{ 'in-view': inView }">
     <div class="gallery__inner">
-      <div class="section-header">
+      <div class="section-header anim-up">
         <p class="section-eyebrow">Our Work</p>
         <h2 class="section-title">The <span class="gold">Gallery</span></h2>
         <p class="section-desc">A glimpse into the art that defines us.</p>
@@ -9,10 +9,11 @@
 
       <div class="gallery__grid">
         <div
-          class="gallery__item"
+          class="gallery__item anim-up"
           v-for="(img, i) in images"
           :key="i"
           :class="img.size"
+          :style="{ '--i': i }"
           @click="openLight(img)"
         >
           <img :src="img.src" :alt="img.alt" loading="lazy" />
@@ -22,7 +23,7 @@
         </div>
       </div>
 
-      <div class="gallery__cta">
+      <div class="gallery__cta anim-up" style="--i: 7">
         <a href="https://www.instagram.com/hbscbali/" target="_blank" rel="noopener" class="btn-outline-gold">
           View Full Gallery
         </a>
@@ -40,7 +41,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useInView } from '../composables/useInView'
 
+const { target, inView } = useInView()
 const lightImg = ref(null)
 
 function openLight(img) {
@@ -215,6 +218,20 @@ const images = [
 
 .fade-enter-active, .fade-leave-active { transition: opacity 0.25s; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* ── Scroll animations ── */
+.anim-up {
+  opacity: 0;
+  transform: translateY(32px) scale(0.98);
+  transition:
+    opacity   0.7s cubic-bezier(0.16,1,0.3,1) calc(var(--i,0) * 0.08s),
+    transform 0.7s cubic-bezier(0.16,1,0.3,1) calc(var(--i,0) * 0.08s);
+}
+
+.in-view .anim-up {
+  opacity: 1;
+  transform: none;
+}
 
 @media (max-width: 768px) {
   .gallery__grid {
